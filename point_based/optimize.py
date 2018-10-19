@@ -4,7 +4,7 @@ from . import scatter
 from . import objectives
 from plotting import plot
 
-def optimize(data, visualization, objective, n_iterations=1000, learning_rate=1):
+def optimize(data, visualization, objective, n_iterations=1000, learning_rate=0.01):
 	theta = tf.Variable(tf.random_uniform(visualization.param_shape), name="theta")
 	view = visualization.view(theta)
 	cost = objective.cost(view)
@@ -23,7 +23,8 @@ def save_tabular_report(data, labels=None, pathname=''):
 								'radviz': scatter.radviz(tf_data)},
 							'objectives':
 								{'sammon': objectives.sammon_stress(tf_data),
-								'centroid': objectives.centroid()}}
+								'centroid': objectives.centroid(),
+								'entropy': objectives.entropy()}}
 	if labels is not None:
 		point_based_modules['objectives']['collapse'] = objectives.collapse(tf_data, labels)
 	for viz_name, viz_func in point_based_modules['visualization'].items():
